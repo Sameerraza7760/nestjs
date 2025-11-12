@@ -1,10 +1,29 @@
-// import { IsString, MinLength } from 'class-validator';
+import {
+  IsString,
+  IsEmail,
+  MinLength,
+  IsEnum,
+  IsNotEmpty,
+  IsOptional,
+} from 'class-validator';
+import { Role } from 'src/user/user.type';
 
 export class CreateUserDto {
-  // @IsString()
-  username: string;
+  @IsString()
+  @IsNotEmpty()
+  fname: string;
 
-  // @IsString()
-  // @MinLength(4)
+  @IsString()
+  @IsNotEmpty()
+  lname: string;
+
+  @IsEmail()
+  @IsNotEmpty()
+  email: string;
+  @IsEnum(Role)
+  @IsOptional()
+  role: Role = Role.USER;
+  @IsString()
+  @MinLength(6)
   password: string;
 }
