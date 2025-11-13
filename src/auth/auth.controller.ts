@@ -1,8 +1,9 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoggedInUserDto } from './dto/loggedIn-user-dto';
-
+import { AuthGuard } from './auth.guard';
+import { UseGuards, Request } from '@nestjs/common';
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -18,8 +19,9 @@ export class AuthController {
     return loggedInUser;
   }
 
-  // @Get('user')
-  // getAllUsers() {
-  //   return this.authService.getAllUsers();
-  // }
+  @UseGuards(AuthGuard)
+  @Get('profile')
+  getProfile(@Request() req) {
+    return this.authService.getProfile(req.user.sub as string);
+  }
 }
